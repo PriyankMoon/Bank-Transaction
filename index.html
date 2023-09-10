@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Bank Customers</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <style>
+        thead,th{
+            border: 2px solid rgb(82, 82, 82);
+            border-bottom:  3px solid black;
+        }
+        td,tbody{
+            border: 2px solid rgb(185, 185, 185);
+        }
+    </style>
+</head>
+<body>
+    <div class="container mt-5">
+        <h1>Bank Customers</h1>
+        <form>
+            <div class="form-group">
+                <label for="fromCustomer">From:</label>
+                <select class="form-control" id="fromCustomer">
+                    <option value="1">Andy</option>
+                    <option value="2">Mohit</option>
+                    <option value="3">Rohit</option>
+                    <option value="4">Alex</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label for="toCustomer">To:</label>
+                <select class="form-control" id="toCustomer">
+                    <option value="1">Andy</option>
+                    <option value="2">Mohit</option>
+                    <option value="3">Rohit</option>
+                    <option value="4">Alex</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label for="transferAmount">Amount:</label>
+                <input type="number" class="form-control" id="transferAmount" placeholder="Enter Amount">
+            </div>
+            <button type="button" class="btn btn-primary" onclick="transferMoney()">Transfer</button>
+        </form>
+        <hr>
+        <table class="table" style="border: 3px solid black;">
+            <thead>
+                <tr>
+                    <th>Name</th>
+                    <th>Email</th>
+                    <th>Phone</th>
+                    <th>Balance</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td id="customerName1">Andy</td>
+                    <td id="customerEmail1">andy1@example.com</td>
+                    <td id="customerPhone1">123-456-7890</td>
+                    <td id="customerBalance1">$1000</td>
+                </tr>
+                <tr>
+                    <td id="customerName2">Mohit</td>
+                    <td id="customerEmail2">mohit2@example.com</td>
+                    <td id="customerPhone2">987-664-3738</td>
+                    <td id="customerBalance2">$1500</td>
+                </tr>
+                <tr>
+                    <td id="customerName3">Rohit</td>
+                    <td id="customerEmail3">rohit@example.com</td>
+                    <td id="customerPhone3">940-6544-328</td>
+                    <td id="customerBalance3">$1500</td>
+                </tr>
+                <tr>
+                    <td id="customerName4">Alex</td>
+                    <td id="customerEmail4">alex@example.com</td>
+                    <td id="customerPhone4">547-641-3211</td>
+                    <td id="customerBalance4">$1500</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+    <script>
+        function transferMoney() {
+            var fromCustomerId = document.getElementById('fromCustomer').value;
+            var toCustomerId = document.getElementById('toCustomer').value;
+            var amount = parseFloat(document.getElementById('transferAmount').value);
+
+            if (fromCustomerId === toCustomerId) {
+                alert('Cannot transfer money to yourself.');
+                return;
+            }
+
+            var senderBalanceElement = document.getElementById('customerBalance' + fromCustomerId);
+            var senderBalance = parseFloat(senderBalanceElement.textContent.substring(1));
+
+            if (senderBalance <= 0) {
+                alert('Not enough money to transfer.');
+                return;
+            }
+
+            if (!isNaN(amount) && amount > 0) {
+                if (senderBalance >= amount) {
+                    // You should implement AJAX here to perform the money transfer on the server
+                    // For demonstration purposes, we'll simulate the update with a delay
+                    setTimeout(function () {
+                        // Update the sender's balance (reduce it by the transferred amount)
+                        senderBalance -= amount;
+                        senderBalanceElement.textContent = '$' + senderBalance.toFixed(2);
+
+                        // Update the receiver's balance (increase it by the transferred amount)
+                        var receiverBalanceElement = document.getElementById('customerBalance' + toCustomerId);
+                        var receiverBalance = parseFloat(receiverBalanceElement.textContent.substring(1));
+                        receiverBalance += amount;
+                        receiverBalanceElement.textContent = '$' + receiverBalance.toFixed(2);
+
+                        alert('Money transferred successfully.');
+                    }, 1000); // Simulate a 1-second delay for demonstration
+                } else {
+                    alert('Not enough money to transfer.');
+                }
+            } else {
+                alert('Invalid amount');
+            }
+        }
+    </script>
+</body>
+</html>
